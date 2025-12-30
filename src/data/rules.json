@@ -1,0 +1,52 @@
+[
+    {
+        "id": "safety_medical",
+        "description": "Check for history of disorders",
+        "condition": "diagnosed_neuro_resp == True",
+        "advice": "⚠️ MEDICAL: History of neuro/respiratory disorders detected. Consult your doctor."
+    },
+    {
+        "id": "safety_meds",
+        "description": "Check for medication side effects",
+        "condition": "medication_sleep == True",
+        "advice": "💊 MEDS: Review medications. Some drugs cause insomnia/drowsiness."
+    },
+    {
+        "id": "lifestyle_duration",
+        "description": "Sleep duration check",
+        "condition": "sleep_hrs == '< 4'",
+        "advice": "🔴 DURATION: <4 hours is dangerous for health/safety."
+    },
+    {
+        "id": "lifestyle_shift",
+        "description": "Shift work advice",
+        "condition": "work_shift >= 3",
+        "advice": "⏰ SHIFT WORK: Use 'Darkness Anchors' (sunglasses) when commuting home after night shifts."
+    },
+    {
+        "id": "habit_caffeine_insomnia",
+        "description": "Specific advice for Insomniacs drinking coffee",
+        "condition": "caffeine_pm >= 3",
+        "required_diagnosis": "Insomnia",
+        "advice": "☕ INSOMNIA FIX: Caffeine is a major trigger for you. Strict cutoff at 2:00 PM."
+    },
+    {
+        "id": "habit_caffeine_general",
+        "description": "General caffeine advice",
+        "condition": "caffeine_pm >= 3",
+        "block_if_diagnosis": "Insomnia",
+        "advice": "☕ HABIT: Caffeine after 6 PM effects sleep depth. Switch to herbal tea."
+    },
+    {
+        "id": "env_room",
+        "description": "Bedroom quality check",
+        "condition": "room_quality <= 2",
+        "advice": "🛏️ ENV: Make bedroom Pitch Black, Quiet, and Cool (18°C/65°F)."
+    },
+    {
+        "id": "tech_blue_light",
+        "description": "Blue light usage",
+        "condition": "avoid_scr <= 2",
+        "advice": "💡 LIGHT: Blue light suppresses melatonin. Use blocking glasses 90 mins before bed."
+    }
+]
