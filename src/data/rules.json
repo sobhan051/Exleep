@@ -1,52 +1,148 @@
 [
     {
-        "id": "safety_medical",
-        "description": "Check for history of disorders",
+        "id": "safety_medical_neuro",
+        "category": "Medical",
+        "description": "Check for history of neurological/respiratory disorders",
         "condition": "diagnosed_neuro_resp == True",
-        "advice": "⚠️ MEDICAL: History of neuro/respiratory disorders detected. Consult your doctor."
+        "advice": "⚠️ MEDICAL ALERT: You indicated a history of neurological or respiratory disorders. It is critical that your specialist is aware of your current sleep symptoms."
     },
     {
         "id": "safety_meds",
+        "category": "Medical",
         "description": "Check for medication side effects",
         "condition": "medication_sleep == True",
-        "advice": "💊 MEDS: Review medications. Some drugs cause insomnia/drowsiness."
+        "advice": "💊 MEDICATION CHECK: You are taking medication that affects sleep. Review these with your doctor, as some antidepressants, steroids, or stimulants can directly cause insomnia."
     },
     {
-        "id": "lifestyle_duration",
-        "description": "Sleep duration check",
+        "id": "safety_pain",
+        "category": "Medical",
+        "description": "Chronic pain check",
+        "condition": "chronic_pain == True",
+        "advice": "🩺 PAIN MANAGEMENT: Chronic pain is fragmenting your sleep architecture. Sleep hygiene alone is often not enough; prioritize pain management strategies with your provider."
+    },
+    {
+        "id": "life_duration_short",
+        "category": "Lifestyle",
+        "description": "Sleep duration check (< 4 hours)",
         "condition": "sleep_hrs == '< 4'",
-        "advice": "🔴 DURATION: <4 hours is dangerous for health/safety."
+        "advice": "🔴 CRITICAL DURATION: Sleeping less than 4 hours regularly is dangerous. It severely impacts cognitive function, immunity, and long-term heart health."
     },
     {
-        "id": "lifestyle_shift",
+        "id": "life_duration_short_moderate",
+        "category": "Lifestyle",
+        "description": "Sleep duration check (4-6 hours)",
+        "condition": "sleep_hrs == '4-6'",
+        "advice": "🟠 LOW DURATION: You are getting 4-6 hours of sleep. Most adults need 7-9 hours for full physical and mental recovery."
+    },
+    {
+        "id": "life_shift_work",
+        "category": "Lifestyle",
         "description": "Shift work advice",
         "condition": "work_shift >= 3",
-        "advice": "⏰ SHIFT WORK: Use 'Darkness Anchors' (sunglasses) when commuting home after night shifts."
+        "advice": "⏰ SHIFT WORK STRATEGY: To manage rotating shifts, use 'Darkness Anchors'. Wear sunglasses on your commute home after a night shift to prevent morning light from waking your body clock."
     },
     {
-        "id": "habit_caffeine_insomnia",
-        "description": "Specific advice for Insomniacs drinking coffee",
+        "id": "life_exercise",
+        "category": "Lifestyle",
+        "description": "Sedentary lifestyle check",
+        "condition": "physical_activity <= 2",
+        "advice": "🏃 ACTIVITY LEVEL: You reported low physical activity. 20 minutes of daily moderate exercise increases 'adenosine' (sleep pressure), helping you fall asleep faster."
+    },
+    {
+        "id": "env_room_quality",
+        "category": "Environment",
+        "description": "Bedroom quality check",
+        "condition": "room_quality <= 2",
+        "advice": "🛏️ SLEEP SANCTUARY: Your bedroom environment is rated poor. Ensure it is Pitch Black (blackout curtains), Quiet, and Cool (ideally 18°C / 65°F)."
+    },
+    {
+        "id": "diet_caffeine_insomnia",
+        "category": "Diet",
+        "description": "Strict caffeine rule for Insomniacs",
         "condition": "caffeine_pm >= 3",
         "required_diagnosis": "Insomnia",
-        "advice": "☕ INSOMNIA FIX: Caffeine is a major trigger for you. Strict cutoff at 2:00 PM."
+        "advice": "☕ CAFFEINE (INSOMNIA PROTOCOL): Because you show signs of Insomnia, you must have a strict caffeine cutoff at 2:00 PM. Caffeine has a half-life of ~6 hours."
     },
     {
-        "id": "habit_caffeine_general",
+        "id": "diet_caffeine_general",
+        "category": "Diet",
         "description": "General caffeine advice",
         "condition": "caffeine_pm >= 3",
         "block_if_diagnosis": "Insomnia",
-        "advice": "☕ HABIT: Caffeine after 6 PM effects sleep depth. Switch to herbal tea."
+        "advice": "☕ CAFFEINE HABIT: Drinking caffeine after 6 PM reduces deep sleep (Stage 3), even if you fall asleep easily. Switch to herbal tea or decaf in the evening."
     },
     {
-        "id": "env_room",
-        "description": "Bedroom quality check",
-        "condition": "room_quality <= 2",
-        "advice": "🛏️ ENV: Make bedroom Pitch Black, Quiet, and Cool (18°C/65°F)."
+        "id": "diet_alcohol",
+        "category": "Diet",
+        "description": "Alcohol consumption",
+        "condition": "alcohol_bed >= 3",
+        "advice": "🍷 ALCOHOL TRAP: Alcohol helps you fall asleep initially but causes 'Rebound Effect', fragmenting your sleep in the second half of the night. Avoid it 3 hours before bed."
     },
     {
-        "id": "tech_blue_light",
-        "description": "Blue light usage",
+        "id": "diet_heavy_meal_apnea",
+        "category": "Diet",
+        "description": "Heavy meals context for Apnea",
+        "condition": "heavy_meal >= 3",
+        "required_diagnosis": "Obstructive Sleep Apnea",
+        "advice": "🥗 DIET & APNEA: Heavy meals close to bedtime increase pressure on the diaphragm and worsen Apnea/Snoring events. Finish eating 3 hours before sleep."
+    },
+    {
+        "id": "diet_heavy_meal_general",
+        "category": "Diet",
+        "description": "General heavy meal advice",
+        "condition": "heavy_meal >= 3",
+        "block_if_diagnosis": "Obstructive Sleep Apnea",
+        "advice": "🥗 DIGESTION: Heavy meals require energy to digest, raising your body temperature. This conflicts with the body's need to cool down for sleep."
+    },
+    {
+        "id": "tech_blue_light_crsd",
+        "category": "Technology",
+        "description": "Strict light control for CRSD",
         "condition": "avoid_scr <= 2",
-        "advice": "💡 LIGHT: Blue light suppresses melatonin. Use blocking glasses 90 mins before bed."
+        "required_diagnosis": "Circadian Rhythm Disorder",
+        "advice": "💡 LIGHT (CRSD PROTOCOL): Your internal clock is out of sync. You MUST avoid blue light (screens) for 2 hours before bed to allow melatonin production."
+    },
+    {
+        "id": "tech_blue_light_general",
+        "category": "Technology",
+        "description": "General screen advice",
+        "condition": "avoid_scr <= 2",
+        "block_if_diagnosis": "Circadian Rhythm Disorder",
+        "advice": "📱 DIGITAL SUNSET: Blue light from screens suppresses melatonin. Try using 'Night Shift' mode or blue-light blocking glasses in the evening."
+    },
+    {
+        "id": "tech_interference",
+        "category": "Technology",
+        "description": "User feels tech interferes",
+        "condition": "tech_interferes >= 4",
+        "advice": "🔌 TECH DETOX: You admitted technology hurts your sleep. Charge your phone in the kitchen (not the bedroom) and buy a standard alarm clock."
+    },
+    {
+        "id": "social_loneliness",
+        "category": "Social",
+        "description": "High loneliness score",
+        "condition": "social_lonely >= 4",
+        "advice": "❤️ SOCIAL CONNECTION: Loneliness keeps the brain in a 'hyper-vigilant' state. Scheduling a quick call with a friend or family member in the evening can lower cortisol levels."
+    },
+    {
+        "id": "mental_stress",
+        "category": "Mental Health",
+        "description": "Bedtime stress",
+        "condition": "mental_stress >= 4",
+        "advice": "🧠 BRAIN DUMP: Racing thoughts at night? Try writing a 'To-Do' list for tomorrow 2 hours before bed. This offloads the worry from your working memory."
+    },
+    {
+        "id": "hygiene_naps",
+        "category": "Hygiene",
+        "description": "Long naps",
+        "condition": "naps >= 3",
+        "advice": "💤 NAP STRATEGY: Long naps (>30 mins) steal 'sleep pressure' from the night, making it harder to fall asleep. Limit naps to 20 minutes (Power Nap)."
+    },
+    {
+        "id": "hygiene_bed_association",
+        "category": "Hygiene",
+        "description": "Using bed for work/eating",
+        "condition": "bed_usage == False",
+        "advice": "🛏️ STIMULUS CONTROL: Stop working, eating, or watching TV in bed. Your brain needs to associate the bed ONLY with sleep and intimacy."
     }
 ]
