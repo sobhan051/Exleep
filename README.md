@@ -37,19 +37,16 @@ A robust, modular **Expert System** built in Python that analyzes sleep patterns
     ```
 
 2.  **Install dependencies:**
-    *(If you are using the `experta` version, install it. Otherwise, standard libraries are used for the JSON engine).*
     ```bash
-    pip install experta
+    pip install -r requirements.txt
     ```
 
 3.  **Run the application:**
     ```bash
-    python main.py
+    streamlit run app.py
     ```
 ---
 
 ## 📝 To-Do List / Roadmap
 ### 🎨 User Interface
-- [ ] **Migrate to Streamlit:** Build a web-based UI to replace the Command Line Interface (CLI).
-- [ ] Add visual charts (Bar/Radar charts) for symptom severity using `matplotlib` or `plotly`.
-- [ ] **Fuzzy Logic Implementation:** Move from hard thresholds (50%) to fuzzy membership functions (Low/Medium/High risk).
+- [x] **Migrate to Streamlit:** Build a web-based UI to replace the Command Line Interface (CLI).
