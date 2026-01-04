@@ -50,40 +50,39 @@ class JSONCoachingEngine:
         return advice_list
 
     def _check_condition(self, rule, person_data):
-        """Parses the 'condition' string (e.g., 'age >= 3')"""
-        if 'condition' not in rule:
-            return True # Always run if no condition
-
-        # Split string: "variable operator value"
-        # Example: "caffeine_pm >= 3"
+        if 'condition' not in rule: return True
         try:
-            parts = rule['condition'].split()
-            var_name = parts[0]
-            op_str = parts[1]
+            # Parse string "var >= val"
+            # Split into max 3 parts to handle values with spaces if needed
+            parts = rule['condition'].split(' ', 2) 
+            if len(parts) != 3: return False
             
-            # Handle string values (e.g. sleep_hrs == '< 4')
-            if "'" in rule['condition'] or '"' in rule['condition']:
-                target_val = rule['condition'].split(op_str)[1].strip().strip("'").strip('"')
+            var, op, val_str = parts[0], parts[1], parts[2]
+            
+            # --- FIX: Handle Booleans, Strings, and Numbers ---
+            if val_str == "True":
+                target = True
+            elif val_str == "False":
+                target = False
+            elif "'" in val_str or '"' in val_str:
+                target = val_str.strip("'").strip('"')
             else:
-                target_val = float(parts[2]) # Assume number
+                try:
+                    target = float(val_str)
+                except ValueError:
+                    target = val_str # Fallback to string
+            # --------------------------------------------------
 
-            # Get user's actual value
-            user_val = person_data.get(var_name)
+            user_val = person_data.get(var)
             
-            # Skip if user didn't answer this question
-            if user_val is None:
-                return False
-
-            # Compare
-            if op_str in self.ops:
-                return self.ops[op_str](user_val, target_val)
+            # If user didn't answer, we can't evaluate
+            if user_val is None: return False 
             
+            return self.ops[op](user_val, target)
         except Exception as e:
-            print(f"Error parsing rule {rule.get('id')}: {e}")
-            return False
-        
+            print(f"Error evaluating rule {rule.get('id', 'unknown')}: {e}")
         return False
-
+    
     def _check_context(self, rule, diagnoses):
         """Checks 'required_diagnosis' and 'block_if_diagnosis'"""
         
