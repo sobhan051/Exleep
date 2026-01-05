@@ -21,11 +21,27 @@
         "advice": "🩺 PAIN MANAGEMENT: Chronic pain is fragmenting your sleep architecture. Sleep hygiene alone is often not enough; prioritize pain management strategies with your provider."
     },
     {
-        "id": "life_duration_short",
+        "id": "life_duration_critical",
         "category": "Lifestyle",
         "description": "Sleep duration check (< 4 hours)",
         "condition": "sleep_hrs == '< 4'",
         "advice": "🔴 CRITICAL DURATION: Sleeping less than 4 hours regularly is dangerous. It severely impacts cognitive function, immunity, and long-term heart health."
+    },
+    {
+        "id": "life_duration_adolescent",
+        "category": "Lifestyle",
+        "description": "Adolescents need more sleep",
+        "condition": "sleep_hrs == '6-8'",
+        "age_check": "Adolescent",
+        "advice": "🌱 ADOLESCENT GROWTH: As an adolescent, 6-8 hours might not be enough. Developing brains typically require 8-10 hours for optimal cognitive performance."
+    },
+    {
+        "id": "life_duration_elderly",
+        "category": "Lifestyle",
+        "description": "Elderly sleep architecture changes",
+        "condition": "insomnia_fall >= 3",
+        "age_check": "Elderly",
+        "advice": "👴 AGING & SLEEP: It is normal for sleep to become lighter and fragmented with age. Focus on sleep quality (rest) rather than forcing 8 continuous hours."
     },
     {
         "id": "life_duration_short_moderate",
@@ -33,6 +49,13 @@
         "description": "Sleep duration check (4-6 hours)",
         "condition": "sleep_hrs == '4-6'",
         "advice": "🟠 LOW DURATION: You are getting 4-6 hours of sleep. Most adults need 7-9 hours for full physical and mental recovery."
+    },
+    {
+        "id": "life_irregular_schedule",
+        "category": "Lifestyle",
+        "description": "Irregular schedule logic",
+        "condition": "irregular >= 4",
+        "advice": "⏰ SOCIAL JETLAG: Your sleep schedule varies significantly. This confuses your circadian clock. Try to wake up at the same time every day (+/- 30 mins), even on weekends."
     },
     {
         "id": "life_shift_work",
@@ -49,11 +72,26 @@
         "advice": "🏃 ACTIVITY LEVEL: You reported low physical activity. 20 minutes of daily moderate exercise increases 'adenosine' (sleep pressure), helping you fall asleep faster."
     },
     {
+        "id": "life_exercise_late",
+        "category": "Lifestyle",
+        "description": "High activity but trouble falling asleep",
+        "condition": "physical_activity >= 4",
+        "required_diagnosis": "Insomnia",
+        "advice": "🏃 TIMING EXERCISE: You are very active but struggle to sleep. Ensure you finish high-intensity workouts 3 hours before bed to allow your core body temperature to drop."
+    },
+    {
         "id": "env_room_quality",
         "category": "Environment",
         "description": "Bedroom quality check",
         "condition": "room_quality <= 2",
         "advice": "🛏️ SLEEP SANCTUARY: Your bedroom environment is rated poor. Ensure it is Pitch Black (blackout curtains), Quiet, and Cool (ideally 18°C / 65°F)."
+    },
+    {
+        "id": "env_noise_masking",
+        "category": "Environment",
+        "description": "Poor room quality specifically due to noise (implied)",
+        "condition": "room_quality <= 2",
+        "advice": "🔊 NOISE MASKING: If noise is the issue, do not rely on silence. Use 'Pink Noise' or 'Brown Noise' (deeper than White Noise) to mask sudden sounds."
     },
     {
         "id": "diet_caffeine_insomnia",
@@ -72,11 +110,36 @@
         "advice": "☕ CAFFEINE HABIT: Drinking caffeine after 6 PM reduces deep sleep (Stage 3), even if you fall asleep easily. Switch to herbal tea or decaf in the evening."
     },
     {
-        "id": "diet_alcohol",
+        "id": "diet_caffeine_anxiety",
         "category": "Diet",
-        "description": "Alcohol consumption",
+        "description": "Caffeine worsening anxiety",
+        "condition": "caffeine_pm >= 3",
+        "condition_2": "mental_stress >= 4",
+        "advice": "☕ JITTER CYCLE: High caffeine intake + High stress is a vicious cycle. Caffeine mimics the symptoms of anxiety (racing heart). Try cutting back to reduce bedtime racing thoughts."
+    },
+    {
+        "id": "diet_alcohol_apnea",
+        "category": "Diet",
+        "description": "Alcohol is dangerous for Apnea",
         "condition": "alcohol_bed >= 3",
-        "advice": "🍷 ALCOHOL TRAP: Alcohol helps you fall asleep initially but causes 'Rebound Effect', fragmenting your sleep in the second half of the night. Avoid it 3 hours before bed."
+        "required_diagnosis": "Obstructive Sleep Apnea",
+        "advice": "🍷 ALCOHOL & APNEA: Alcohol relaxes the throat muscles, which significantly worsens snoring and apnea events. It is highly recommended to avoid alcohol entirely before bed."
+    },
+    {
+        "id": "diet_alcohol_rebound",
+        "category": "Diet",
+        "description": "Alcohol causing early waking",
+        "condition": "alcohol_bed >= 3",
+        "condition_2": "insomnia_early >= 4",
+        "advice": "🍷 THE REBOUND EFFECT: You wake up too early. This is a classic sign of alcohol metabolization. As alcohol wears off, your brain spikes into alertness. Skip the nightcap."
+    },
+    {
+        "id": "diet_alcohol_general",
+        "category": "Diet",
+        "description": "General alcohol consumption",
+        "condition": "alcohol_bed >= 3",
+        "block_if_diagnosis": "Obstructive Sleep Apnea",
+        "advice": "🍷 ALCOHOL TRAP: Alcohol helps you fall asleep initially but destroys REM sleep quality. It is a sedative, not a sleep aid. Avoid it 3 hours before bed."
     },
     {
         "id": "diet_heavy_meal_apnea",
@@ -118,6 +181,14 @@
         "advice": "🔌 TECH DETOX: You admitted technology hurts your sleep. Charge your phone in the kitchen (not the bedroom) and buy a standard alarm clock."
     },
     {
+        "id": "tech_doomscrolling",
+        "category": "Technology",
+        "description": "Tech + Stress loop",
+        "condition": "tech_interferes >= 4",
+        "condition_2": "mental_stress >= 4",
+        "advice": "📱 DOOMSCROLLING LOOP: You have high stress and high tech usage. Checking news/social media at night triggers cortisol. Replace the phone with a physical book."
+    },
+    {
         "id": "social_loneliness",
         "category": "Social",
         "description": "High loneliness score",
@@ -132,10 +203,26 @@
         "advice": "🧠 BRAIN DUMP: Racing thoughts at night? Try writing a 'To-Do' list for tomorrow 2 hours before bed. This offloads the worry from your working memory."
     },
     {
-        "id": "hygiene_naps",
+        "id": "mental_mood",
+        "category": "Mental Health",
+        "description": "Mood affecting sleep",
+        "condition": "mood_change >= 4",
+        "advice": "🧠 MOOD & SLEEP: You noted mood affects your sleep. This relationship is bidirectional. Consider tracking your mood and sleep in a journal to identify triggers."
+    },
+    {
+        "id": "hygiene_naps_narco",
+        "category": "Hygiene",
+        "description": "Napping is actually good for Narcolepsy",
+        "condition": "naps >= 3",
+        "required_diagnosis": "Narcolepsy",
+        "advice": "💤 NAPPING (NARCOLEPSY): Unlike insomnia patients, scheduled short naps (15-20 mins) can be very beneficial for managing narcolepsy symptoms."
+    },
+    {
+        "id": "hygiene_naps_general",
         "category": "Hygiene",
         "description": "Long naps",
         "condition": "naps >= 3",
+        "block_if_diagnosis": "Narcolepsy",
         "advice": "💤 NAP STRATEGY: Long naps (>30 mins) steal 'sleep pressure' from the night, making it harder to fall asleep. Limit naps to 20 minutes (Power Nap)."
     },
     {
@@ -144,5 +231,77 @@
         "description": "Using bed for work/eating",
         "condition": "bed_usage == False",
         "advice": "🛏️ STIMULUS CONTROL: Stop working, eating, or watching TV in bed. Your brain needs to associate the bed ONLY with sleep and intimacy."
+    },
+    {
+        "id": "sym_snore_position",
+        "category": "Symptom Specific",
+        "description": "High snoring but not fully Apnea yet",
+        "condition": "apnea_snore >= 4",
+        "advice": "🛌 SNORING TIP: Loud snoring is often positional. Try the 'Tennis Ball Technique': sew a tennis ball into the back of a t-shirt to prevent rolling onto your back."
+    },
+    {
+        "id": "sym_rls_heat",
+        "category": "Symptom Specific",
+        "description": "Pain/Urge in legs",
+        "condition": "rls_urge >= 4",
+        "advice": "🔥 RLS RELIEF: For leg discomfort, try alternating hot and cold packs on your legs before bed, or a warm bath to relax the muscles."
+    },
+    {
+        "id": "sym_nightmare_irt",
+        "category": "Symptom Specific",
+        "description": "Frequent nightmares",
+        "condition": "para_nightmare >= 4",
+        "advice": "👻 NIGHTMARES: Frequent nightmares can be managed with 'Imagery Rehearsal Therapy' (IRT). Write down the bad dream during the day, change the ending to something positive, and visualize it."
+    },
+    {
+        "id": "sym_sleep_paralysis",
+        "category": "Symptom Specific",
+        "description": "Sleep paralysis reassurance",
+        "condition": "narco_paralysis >= 3",
+        "advice": "🧘 SLEEP PARALYSIS: This phenomenon, while scary, is harmless. It happens when your mind wakes up before your body's REM atonia wears off. Focus on moving just one finger to break the state."
+    },
+    {
+        "id": "coach_rls_iron",
+        "category": "Therapy",
+        "description": "Advice for RLS check",
+        "required_diagnosis": "Restless Legs Syndrome",
+        "advice": "🩸 RLS CHECK: Restless Legs Syndrome is often caused by low iron levels (Ferritin). Consult your doctor for a blood test."
+    },
+    {
+        "id": "coach_rls_gender",
+        "category": "Therapy",
+        "description": "Women are more prone to RLS",
+        "required_diagnosis": "Restless Legs Syndrome",
+        "condition": "gender == 'Female'",
+        "advice": "🚺 RLS & GENDER: RLS is more common in women, often linked to hormonal changes or iron deficiency anemia. Ensure your diet is rich in iron/magnesium."
+    },
+    {
+        "id": "coach_apnea_position",
+        "category": "Therapy",
+        "description": "Positional therapy",
+        "required_diagnosis": "Obstructive Sleep Apnea",
+        "advice": "🛌 POSITIONAL THERAPY: Apnea is often worse when sleeping on your back. Try sleeping on your side to keep airways open."
+    },
+    {
+        "id": "coach_apnea_gender",
+        "category": "Therapy",
+        "description": "Men risk factor",
+        "required_diagnosis": "Obstructive Sleep Apnea",
+        "condition": "gender == 'Male'",
+        "advice": "🚹 APNEA RISK: Men are statistically 2-3 times more likely to have Sleep Apnea due to anatomical differences in the upper airway. Do not ignore snoring."
+    },
+    {
+        "id": "coach_parasomnia_safety",
+        "category": "Therapy",
+        "description": "Safety for sleepwalkers",
+        "required_diagnosis": "Parasomnia",
+        "advice": "🔒 SAFETY FIRST: Since you have signs of Parasomnia (Sleepwalking), ensure windows and doors are locked and remove tripping hazards from your bedroom."
+    },
+    {
+        "id": "coach_insomnia_cbti",
+        "category": "Therapy",
+        "description": "CBT-I recommendation",
+        "required_diagnosis": "Insomnia",
+        "advice": "🧠 CBT-I: The Gold Standard treatment for Insomnia is Cognitive Behavioral Therapy for Insomnia (CBT-I), not pills. Look for an app or therapist specializing in this."
     }
 ]

@@ -209,9 +209,9 @@ with st.form("sleep_assessment_form"):
 # ============================================
 if submit_button:
     with st.spinner("Analyzing sleep architecture..."):
-        time.sleep(0.8) # Simulated logic delay
+        time.sleep(0.8)
 
-        # 1. Prepare User Data
+        # 1. Base User Data
         user_data = {
             "gender": gender, "age": age,
             "sleep_hrs": sleep_hrs, "irregular": irregular,
@@ -229,7 +229,15 @@ if submit_button:
 
         # 2. Logic Engines
         scores = ScoringEngine.calculate_confidence(symptoms)
+        
+        # --- NEW STEP: Merge symptom scores into user_data ---
+        # This allows rules to check specific symptoms if needed
+        # e.g., if you wanted a rule "If snoring >= 5"
+        user_data.update(symptoms) 
+        # ---------------------------------------------------
+
         active_diagnoses = [d for d, s in scores.items() if s >= 50.0]
+        
         coach = JSONCoachingEngine()
         advice_list = coach.evaluate(user_data, active_diagnoses)
 
